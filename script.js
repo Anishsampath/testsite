@@ -43,7 +43,7 @@ function initGame() {
     messageArea.textContent = '';
     messageArea.classList.remove('win', 'lose'); // Clear previous styling
     playAgainButton.classList.add('hidden');
-    shuffleButton.disabled = true;
+    shuffleButton.disabled = true; // Shuffle button is disabled until a guess is made
     gameArea.classList.remove('win-celebration'); // Remove fireworks
 
     // Enable and reset guess buttons
@@ -84,8 +84,10 @@ cubes.forEach(cube => {
     // Mouse events (for individual drag)
     cube.addEventListener('mousedown', (e) => {
         e.preventDefault();
-        // Only drag if not shuffling and the shuffle button is enabled (game not in active roll state)
-        if (!cube.classList.contains('shuffling') && !shuffleButton.disabled) {
+        // Allow dragging ONLY if the cube is not currently shuffling (animating a roll)
+        // and if the shuffleButton is NOT disabled (meaning a guess has been made or game is ready to be played again).
+        // If shuffleButton is disabled, it means no guess has been made yet, so also allow drag.
+        if (!cube.classList.contains('shuffling') && (shuffleButton.disabled || !shuffleButton.disabled)) {
             cubeStates.set(cube, {
                 isDragging: true,
                 startX: e.clientX,
@@ -98,7 +100,10 @@ cubes.forEach(cube => {
     // Touch events (for individual drag)
     cube.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        if (!cube.classList.contains('shuffling') && !shuffleButton.disabled) {
+        // Allow dragging ONLY if the cube is not currently shuffling (animating a roll)
+        // and if the shuffleButton is NOT disabled (meaning a guess has been made or game is ready to be played again).
+        // If shuffleButton is disabled, it means no guess has been made yet, so also allow drag.
+        if (!cube.classList.contains('shuffling') && (shuffleButton.disabled || !shuffleButton.disabled)) {
             cubeStates.set(cube, {
                 isDragging: true,
                 startX: e.touches[0].clientX,
@@ -186,13 +191,6 @@ document.addEventListener('touchend', () => {
     });
 });
 
----
-
-## Updated Shuffle Button Logic
-
-The core change is within the `shuffleButton` event listener. The way `finalX`, `finalY`, and `finalZ` are calculated is crucial to ensure the dice land precisely on a face while still showing a "tumble."
-
-```javascript
 // --- Shuffle Button Logic ---
 shuffleButton.addEventListener('click', () => {
     if (!userGuess) {
@@ -222,40 +220,60 @@ shuffleButton.addEventListener('click', () => {
         let currentY = parseFloat(cube.dataset.currentY);
         let currentZ = parseFloat(cube.dataset.currentZ);
 
-        // Calculate a random number of full rotations (tumbles) for X and Y axes
-        // We ensure we add enough rotations to make the animation visible and varied.
-
         // Normalize current rotations to be within 0-360 for consistent tumble calculation
-        // This prevents the accumulated rotation values from becoming excessively large.
         currentX = currentX % 360;
         currentY = currentY % 360;
 
         // Add random full revolutions to create the "tumble" effect during the animation.
-        // We add these revolutions to the target face rotation.
         const revolutionsX = (Math.floor(Math.random() * 5) + 5) * 360; // 5 to 9 full rotations
         const revolutionsY = (Math.floor(Math.random() * 5) + 5) * 360;
 
-        // Calculate the final rotation values. These values represent the exact orientation
-        // for the desired face to be up, plus the randomized "tumble" rotations.
-        // The CSS transition will animate from the current `transform` to these `finalX`/`finalY` values,
-        // effectively showing multiple spins before landing on the correct face.
+        // Calculate the final rotation values.
         const finalX = targetFaceRotation.x + revolutionsX;
         const finalY = targetFaceRotation.y + revolutionsY;
         
         // Add a random Z-axis spin for extra visual flair during the shuffle.
-        // Ensure some random spin plus full revolutions for dynamism.
         const revolutionsZ = (Math.floor(Math.random() * 2) + 1) * 360; // 1 to 2 full rotations
         const finalZ = (Math.random() * 180 - 90) + revolutionsZ; // Random spin between -90 and 90, plus revolutions
 
-        // Apply the calculated final rotation. The CSS transition will handle the animation
-        // from the cube's current state to this new final state.
+        // Apply the calculated final rotation.
         cube.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg) rotateZ(${finalZ}deg)`;
 
         // Update dataset with these new final rotation values.
-        // This is crucial for the continuity of subsequent drags or shuffles.
-        // The next animation will start from these values.
         cube.dataset.currentX = finalX;
         cube.dataset.currentY = finalY;
         cube.dataset.currentZ = finalZ;
     });
 });
+
+// --- Check Guess Logic ---
+function checkGuess() {
+    const total = rollResults[0] + rollResults[1];
+    diceTotalDisplay.textContent = `Total: ${total}`;
+
+    let correct = false;
+    if (userGuess === '<7' && total < 7) {
+        correct = true;
+    } else if (userGuess === '7' && total === 7) {
+        correct = true;
+    } else if (userGuess === '>7' && total > 7) {
+        correct = true;
+    }
+
+    if (correct) {
+        messageArea.textContent = "YOU WIN! 🎉";
+        messageArea.style.color = "#32CD32"; // Lime green for win
+        gameArea.classList.add('win-celebration'); // Trigger fireworks effect
+    } else {
+        messageArea.textContent = "Try again! 😞";
+        messageArea.style.color = "#FF4500"; // Orange red for lose
+    }
+
+    playAgainButton.classList.remove('hidden'); // Show play again button
+}
+
+// --- Play Again Button Logic ---
+playAgainButton.addEventListener('click', initGame);
+
+// Initial game setup when page loads
+initGame();
