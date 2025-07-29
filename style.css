@@ -7,41 +7,86 @@ body {
     align-items: center;
     min-height: 100vh;
     /* Casino-themed background */
-    background: linear-gradient(135deg, #004d00, #003300, #004d00); /* Dark green gradient */
+    background: radial-gradient(circle at center, #006600, #003300); /* Dark green radial gradient */
     color: #FFD700; /* Gold text color */
     font-family: 'Arial', sans-serif;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 h1 {
-    margin-bottom: 40px;
-    font-size: 2.5em;
-    letter-spacing: 2px;
+    margin-bottom: 30px;
+    font-size: 2.8em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 .game-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); /* Green glow */
-    border: 2px solid #FFD700; /* Gold border */
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.7); /* More opaque dark overlay */
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.6); /* Stronger green glow */
+    border: 3px solid #FFD700; /* Thicker gold border */
+    position: relative; /* For fireworks effect */
 }
 
+/* Guess Section */
+#guess-section p {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+}
+
+.guess-buttons {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.guess-btn {
+    padding: 12px 25px;
+    font-size: 1.3em;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #FFD700, #FFA500); /* Gold to Orange */
+    color: #4B0082; /* Dark purple */
+    border: 2px solid #8B0000;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.guess-btn:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #FFA500, #FFD700);
+    box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.guess-btn:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+}
+
+.guess-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(50%); /* Visually indicate disabled */
+}
+
+/* Dice Wrapper */
 .cubes-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 60px; /* More space between dice */
+    gap: 60px;
     margin-bottom: 40px;
 }
 
 .cube-container {
-    width: 120px; /* Dice size */
+    width: 120px;
     height: 120px;
-    perspective: 1000px; /* INCREASED PERSPECTIVE for better 3D effect */
+    perspective: 1000px; /* Good perspective for 3D effect */
 }
 
 .cube {
@@ -49,75 +94,69 @@ h1 {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 1s ease-out; /* Smoother, longer transition for shuffle */
+    transition: transform 1.2s ease-out; /* Longer, smoother transition for shuffle */
+    cursor: grab; /* Indicate draggable */
+}
+
+.cube.shuffling {
+    cursor: grabbing;
 }
 
 .face {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #FFFFFF; /* White dice face */
-    border: 1px solid #CCCCCC; /* Light gray border */
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
     box-sizing: border-box;
-    display: grid; /* Use grid for dot positioning */
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for dots */
-    grid-template-rows: repeat(3, 1fr); /* 3 rows for dots */
-    place-items: center; /* Center dots in grid cells */
-    border-radius: 10px; /* Slightly rounded corners for dice faces */
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Inner shadow for depth */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    place-items: center;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
 }
 
 .dot {
-    width: 20px; /* Size of the dot */
+    width: 20px;
     height: 20px;
-    background-color: #000000; /* Black dot */
-    border-radius: 50%; /* Make them round */
+    background-color: #000000;
+    border-radius: 50%;
     box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 /* Positioning of faces */
-.front  { transform: rotateY(0deg) translateZ(60px); } /* Changed to 60px */
-.back   { transform: rotateY(180deg) translateZ(60px); } /* Changed to 60px */
-.right  { transform: rotateY(90deg) translateZ(60px); } /* Changed to 60px */
-.left   { transform: rotateY(-90deg) translateZ(60px); } /* Changed to 60px */
-.top    { transform: rotateX(90deg) translateZ(60px); } /* Changed to 60px */
-.bottom { transform: rotateX(-90deg) translateZ(60px); } /* Changed to 60px */
+.front  { transform: rotateY(0deg) translateZ(60px); }
+.back   { transform: rotateY(180deg) translateZ(60px); }
+.right  { transform: rotateY(90deg) translateZ(60px); }
+.left   { transform: rotateY(-90deg) translateZ(60px); }
+.top    { transform: rotateX(90deg) translateZ(60px); }
+.bottom { transform: rotateX(-90deg) translateZ(60px); }
 
-/* Positioning for each face's dots using grid */
-/* Face 1 */
-.face-1 .dot:nth-child(1) { grid-area: 2 / 2 / 3 / 3; } /* Center */
+/* Positioning for each face's dots using grid - REMAIN UNCHANGED FROM PREVIOUS STEP */
+.face-1 .dot:nth-child(1) { grid-area: 2 / 2 / 3 / 3; }
+.face-2 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; }
+.face-2 .dot:nth-child(2) { grid-area: 3 / 1 / 4 / 2; }
+.face-3 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; }
+.face-3 .dot:nth-child(2) { grid-area: 2 / 2 / 3 / 3; }
+.face-3 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; }
+.face-4 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+.face-4 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; }
+.face-4 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; }
+.face-4 .dot:nth-child(4) { grid-area: 3 / 3 / 4 / 4; }
+.face-5 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+.face-5 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; }
+.face-5 .dot:nth-child(3) { grid-area: 2 / 2 / 3 / 3; }
+.face-5 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; }
+.face-5 .dot:nth-child(5) { grid-area: 3 / 3 / 4 / 4; }
+.face-6 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+.face-6 .dot:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+.face-6 .dot:nth-child(3) { grid-area: 1 / 3 / 2 / 4; }
+.face-6 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; }
+.face-6 .dot:nth-child(5) { grid-area: 3 / 2 / 4 / 3; }
+.face-6 .dot:nth-child(6) { grid-area: 3 / 3 / 4 / 4; }
 
-/* Face 2 */
-.face-2 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
-.face-2 .dot:nth-child(2) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
-
-/* Face 3 */
-.face-3 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
-.face-3 .dot:nth-child(2) { grid-area: 2 / 2 / 3 / 3; } /* Center */
-.face-3 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
-
-/* Face 4 */
-.face-4 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
-.face-4 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
-.face-4 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
-.face-4 .dot:nth-child(4) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
-
-/* Face 5 */
-.face-5 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
-.face-5 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
-.face-5 .dot:nth-child(3) { grid-area: 2 / 2 / 3 / 3; } /* Center */
-.face-5 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
-.face-5 .dot:nth-child(5) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
-
-/* Face 6 */
-.face-6 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
-.face-6 .dot:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Top-middle */
-.face-6 .dot:nth-child(3) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
-.face-6 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
-.face-6 .dot:nth-child(5) { grid-area: 3 / 2 / 4 / 3; } /* Bottom-middle */
-.face-6 .dot:nth-child(6) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
-
-
+/* Shuffle Button */
 #shuffleButton {
     padding: 15px 30px;
     font-size: 1.5em;
@@ -133,13 +172,71 @@ h1 {
     letter-spacing: 1px;
 }
 
-#shuffleButton:hover {
+#shuffleButton:hover:not(:disabled) {
     background: linear-gradient(to bottom, #FFA500, #FFD700);
     box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
     transform: translateY(-2px);
 }
 
-#shuffleButton:active {
+#shuffleButton:active:not(:disabled) {
     transform: translateY(1px);
     box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+}
+
+#shuffleButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+}
+
+/* Result Section */
+#result-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#dice-total-display {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #32CD32; /* Lime green */
+}
+
+#message-area {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    min-height: 1.6em; /* Prevent layout shift */
+}
+
+#playAgainButton {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background: linear-gradient(to bottom, #00BFFF, #1E90FF); /* Sky blue gradient */
+    color: white;
+    border: 2px solid #0000CD;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#playAgainButton:hover {
+    background: linear-gradient(to bottom, #1E90FF, #00BFFF);
+    transform: translateY(-1px);
+}
+
+/* Utility Class */
+.hidden {
+    display: none !important;
+}
+
+/* Fireworks/Win Celebration Effect */
+@keyframes winGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+    50% { box-shadow: 0 0 40px rgba(0, 255, 0, 1), 0 0 60px rgba(0, 255, 0, 0.8); }
+    100% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+}
+
+.game-area.win-celebration {
+    animation: winGlow 1.5s infinite alternate;
 }

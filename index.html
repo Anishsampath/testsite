@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dice Fidget Casino</title>
+    <title>Casino Dice Roll</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-area">
         <h1>Roll the Dice!</h1>
+
+        <div id="guess-section">
+            <p>What's your guess?</p>
+            <div class="guess-buttons">
+                <button id="guessLess7" class="guess-btn" data-guess="<7">&lt; 7</button>
+                <button id="guess7" class="guess-btn" data-guess="7">7</button>
+                <button id="guessMore7" class="guess-btn" data-guess=">7">&gt; 7</button>
+            </div>
+        </div>
+
         <div class="cubes-wrapper">
-            <!-- Dice 1 -->
             <div class="cube-container">
-                <div class="cube">
+                <div class="cube" data-cube-id="1">
                     <div class="face front face-1">
                         <span class="dot center"></span>
                     </div>
@@ -49,9 +58,8 @@
                 </div>
             </div>
 
-            <!-- Dice 2 -->
             <div class="cube-container">
-                <div class="cube">
+                <div class="cube" data-cube-id="2">
                     <div class="face front face-1">
                         <span class="dot center"></span>
                     </div>
@@ -88,7 +96,14 @@
                 </div>
             </div>
         </div>
-        <button id="shuffleButton">Shuffle Dice</button>
+
+        <button id="shuffleButton" disabled>Shuffle Dice</button>
+
+        <div id="result-section">
+            <p id="dice-total-display">Total: --</p>
+            <p id="message-area"></p>
+            <button id="playAgainButton" class="hidden">Play Again</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
