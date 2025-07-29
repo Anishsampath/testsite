@@ -1,59 +1,138 @@
 body {
     margin: 0;
-    overflow: hidden; /* Hide scrollbars */
+    overflow: hidden;
     display: flex;
-    flex-direction: column; /* Stack H1 and cubes wrapper vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #222; /* Dark background */
-    color: #eee;
-    font-family: Arial, sans-serif;
+    /* Casino-themed background */
+    background: linear-gradient(135deg, #004d00, #003300, #004d00); /* Dark green gradient */
+    color: #FFD700; /* Gold text color */
+    font-family: 'Arial', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 h1 {
-    margin-bottom: 30px; /* Space between title and cubes */
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); /* Green glow */
+    border: 2px solid #FFD700; /* Gold border */
 }
 
 .cubes-wrapper {
-    display: flex; /* Arrange cubes horizontally */
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px; /* Space between cubes */
+    gap: 60px; /* More space between dice */
+    margin-bottom: 40px;
 }
 
 .cube-container {
-    width: 150px; /* Slightly smaller cubes to fit 3 */
-    height: 150px;
-    perspective: 1000px; /* Gives the 3D effect */
+    width: 120px; /* Dice size */
+    height: 120px;
+    perspective: 800px; /* Perspective for 3D effect */
 }
 
 .cube {
     width: 100%;
     height: 100%;
     position: relative;
-    transform-style: preserve-3d; /* Crucial for 3D */
-    /* Initial rotation will be set by JavaScript now */
-    transition: transform 0.1s linear; /* For smooth rotation */
+    transform-style: preserve-3d;
+    /* Initial rotation will be set by JavaScript */
+    transition: transform 1s ease-out; /* Smoother, longer transition for shuffle */
 }
 
 .face {
     position: absolute;
-    width: 100%; /* Faces fill container */
+    width: 100%;
     height: 100%;
-    border: 3px solid #333; /* Border for faces */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* font-size, font-weight, color, text-shadow removed as there are no letters */
-    opacity: 0.9; /* Slightly less transparent */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background-color: #FFFFFF; /* White dice face */
+    border: 1px solid #CCCCCC; /* Light gray border */
+    box-sizing: border-box;
+    display: grid; /* Use grid for dot positioning */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for dots */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows for dots */
+    place-items: center; /* Center dots in grid cells */
+    border-radius: 10px; /* Slightly rounded corners for dice faces */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Inner shadow for depth */
 }
 
-/* Distinct and vibrant colors for each face */
-.front  { transform: rotateY(0deg) translateZ(75px); background: #FF3333; } /* Bright Red */
-.back   { transform: rotateY(180deg) translateZ(75px); background: #33CC33; } /* Bright Green */
-.right  { transform: rotateY(90deg) translateZ(75px); background: #3366FF; } /* Bright Blue */
-.left   { transform: rotateY(-90deg) translateZ(75px); background: #FFFF33; } /* Bright Yellow */
-.top    { transform: rotateX(90deg) translateZ(75px); background: #FF33FF; } /* Bright Magenta */
-.bottom { transform: rotateX(-90deg) translateZ(75px); background: #33FFFF; } /* Bright Cyan */
+.dot {
+    width: 20px; /* Size of the dot */
+    height: 20px;
+    background-color: #000000; /* Black dot */
+    border-radius: 50%; /* Make them round */
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Positioning for each face's dots using grid */
+/* Face 1 */
+.face-1 .dot:nth-child(1) { grid-area: 2 / 2 / 3 / 3; } /* Center */
+
+/* Face 2 */
+.face-2 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
+.face-2 .dot:nth-child(2) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
+
+/* Face 3 */
+.face-3 .dot:nth-child(1) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
+.face-3 .dot:nth-child(2) { grid-area: 2 / 2 / 3 / 3; } /* Center */
+.face-3 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
+
+/* Face 4 */
+.face-4 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
+.face-4 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
+.face-4 .dot:nth-child(3) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
+.face-4 .dot:nth-child(4) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
+
+/* Face 5 */
+.face-5 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
+.face-5 .dot:nth-child(2) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
+.face-5 .dot:nth-child(3) { grid-area: 2 / 2 / 3 / 3; } /* Center */
+.face-5 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
+.face-5 .dot:nth-child(5) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
+
+/* Face 6 */
+.face-6 .dot:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Top-left */
+.face-6 .dot:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Top-middle */
+.face-6 .dot:nth-child(3) { grid-area: 1 / 3 / 2 / 4; } /* Top-right */
+.face-6 .dot:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Bottom-left */
+.face-6 .dot:nth-child(5) { grid-area: 3 / 2 / 4 / 3; } /* Bottom-middle */
+.face-6 .dot:nth-child(6) { grid-area: 3 / 3 / 4 / 4; } /* Bottom-right */
+
+
+#shuffleButton {
+    padding: 15px 30px;
+    font-size: 1.5em;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #FFD700, #FFA500); /* Gold to Orange gradient */
+    color: #4B0082; /* Dark purple text */
+    border: 2px solid #8B0000; /* Dark red border */
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4); /* Gold glow shadow */
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#shuffleButton:hover {
+    background: linear-gradient(to bottom, #FFA500, #FFD700);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+#shuffleButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+}
