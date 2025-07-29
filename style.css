@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #222;
+    background-color: #222; /* Dark background */
     color: #eee;
     font-family: Arial, sans-serif;
 }
@@ -31,27 +31,22 @@ body {
     position: absolute;
     width: 200px;
     height: 200px;
-    border: 2px solid #555;
-    background: rgba(0, 150, 255, 0.7); /* Semi-transparent blue */
+    border: 3px solid #333; /* Slightly thicker border */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-size: 6em; /* LARGER font size for letters */
+    font-weight: bold; /* Make letters bold */
+    color: white; /* Letter color */
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.7); /* Stronger shadow for letters */
+    opacity: 0.9; /* Slightly less transparent */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-.front  { transform: rotateY(0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY(90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-/* Optional: Add numbers or labels to faces for clarity */
-.front:before { content: "1"; }
-.back:before { content: "6"; }
-.right:before { content: "3"; }
-.left:before { content: "4"; }
-.top:before { content: "5"; }
-.bottom:before { content: "2"; }
+/* Distinct and vibrant colors for each face */
+.front  { transform: rotateY(0deg) translateZ(100px); background: #FF3333; } /* Bright Red - A */
+.back   { transform: rotateY(180deg) translateZ(100px); background: #33CC33; } /* Bright Green - N */
+.right  { transform: rotateY(90deg) translateZ(100px); background: #3366FF; } /* Bright Blue - I */
+.left   { transform: rotateY(-90deg) translateZ(100px); background: #FFFF33; } /* Bright Yellow - S */
+.top    { transform: rotateX(90deg) translateZ(100px); background: #FF33FF; } /* Bright Magenta - H */
+.bottom { transform: rotateX(-90deg) translateZ(100px); background: #33FFFF; } /* Bright Cyan - R */
