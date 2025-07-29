@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #222;
+    color: #eee;
+    font-family: Arial, sans-serif;
+}
+
+.cube-container {
+    width: 200px;
+    height: 200px;
+    perspective: 1000px; /* Gives the 3D effect */
+    margin-bottom: 20px;
+}
+
+.cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d; /* Crucial for 3D */
+    transform: rotateX( -30deg) rotateY(45deg); /* Initial rotation */
+    transition: transform 0.1s linear; /* For smooth rotation */
+}
+
+.face {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #555;
+    background: rgba(0, 150, 255, 0.7); /* Semi-transparent blue */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.front  { transform: rotateY(0deg) translateZ(100px); }
+.back   { transform: rotateY(180deg) translateZ(100px); }
+.right  { transform: rotateY(90deg) translateZ(100px); }
+.left   { transform: rotateY(-90deg) translateZ(100px); }
+.top    { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+/* Optional: Add numbers or labels to faces for clarity */
+.front:before { content: "1"; }
+.back:before { content: "6"; }
+.right:before { content: "3"; }
+.left:before { content: "4"; }
+.top:before { content: "5"; }
+.bottom:before { content: "2"; }
