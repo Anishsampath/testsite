@@ -85,9 +85,7 @@ cubes.forEach(cube => {
     cube.addEventListener('mousedown', (e) => {
         e.preventDefault();
         // Allow dragging ONLY if the cube is not currently shuffling (animating a roll)
-        // and if the shuffleButton is NOT disabled (meaning a guess has been made or game is ready to be played again).
-        // If shuffleButton is disabled, it means no guess has been made yet, so also allow drag.
-        if (!cube.classList.contains('shuffling') && (shuffleButton.disabled || !shuffleButton.disabled)) {
+        if (!cube.classList.contains('shuffling')) {
             cubeStates.set(cube, {
                 isDragging: true,
                 startX: e.clientX,
@@ -101,9 +99,7 @@ cubes.forEach(cube => {
     cube.addEventListener('touchstart', (e) => {
         e.preventDefault();
         // Allow dragging ONLY if the cube is not currently shuffling (animating a roll)
-        // and if the shuffleButton is NOT disabled (meaning a guess has been made or game is ready to be played again).
-        // If shuffleButton is disabled, it means no guess has been made yet, so also allow drag.
-        if (!cube.classList.contains('shuffling') && (shuffleButton.disabled || !shuffleButton.disabled)) {
+        if (!cube.classList.contains('shuffling')) {
             cubeStates.set(cube, {
                 isDragging: true,
                 startX: e.touches[0].clientX,
