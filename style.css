@@ -2,7 +2,7 @@ body {
     margin: 0;
     overflow: hidden; /* Hide scrollbars */
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack H1 and cubes wrapper vertically */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -11,11 +11,21 @@ body {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    margin-bottom: 30px; /* Space between title and cubes */
+}
+
+.cubes-wrapper {
+    display: flex; /* Arrange cubes horizontally */
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* Space between cubes */
+}
+
 .cube-container {
-    width: 200px;
-    height: 200px;
+    width: 150px; /* Slightly smaller cubes to fit 3 */
+    height: 150px;
     perspective: 1000px; /* Gives the 3D effect */
-    margin-bottom: 20px;
 }
 
 .cube {
@@ -23,30 +33,27 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d; /* Crucial for 3D */
-    transform: rotateX( -30deg) rotateY(45deg); /* Initial rotation */
+    /* Initial rotation will be set by JavaScript now */
     transition: transform 0.1s linear; /* For smooth rotation */
 }
 
 .face {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    border: 3px solid #333; /* Slightly thicker border */
+    width: 100%; /* Faces fill container */
+    height: 100%;
+    border: 3px solid #333; /* Border for faces */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 6em; /* LARGER font size for letters */
-    font-weight: bold; /* Make letters bold */
-    color: white; /* Letter color */
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.7); /* Stronger shadow for letters */
+    /* font-size, font-weight, color, text-shadow removed as there are no letters */
     opacity: 0.9; /* Slightly less transparent */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
 /* Distinct and vibrant colors for each face */
-.front  { transform: rotateY(0deg) translateZ(100px); background: #FF3333; } /* Bright Red - A */
-.back   { transform: rotateY(180deg) translateZ(100px); background: #33CC33; } /* Bright Green - N */
-.right  { transform: rotateY(90deg) translateZ(100px); background: #3366FF; } /* Bright Blue - I */
-.left   { transform: rotateY(-90deg) translateZ(100px); background: #FFFF33; } /* Bright Yellow - S */
-.top    { transform: rotateX(90deg) translateZ(100px); background: #FF33FF; } /* Bright Magenta - H */
-.bottom { transform: rotateX(-90deg) translateZ(100px); background: #33FFFF; } /* Bright Cyan - R */
+.front  { transform: rotateY(0deg) translateZ(75px); background: #FF3333; } /* Bright Red */
+.back   { transform: rotateY(180deg) translateZ(75px); background: #33CC33; } /* Bright Green */
+.right  { transform: rotateY(90deg) translateZ(75px); background: #3366FF; } /* Bright Blue */
+.left   { transform: rotateY(-90deg) translateZ(75px); background: #FFFF33; } /* Bright Yellow */
+.top    { transform: rotateX(90deg) translateZ(75px); background: #FF33FF; } /* Bright Magenta */
+.bottom { transform: rotateX(-90deg) translateZ(75px); background: #33FFFF; } /* Bright Cyan */
